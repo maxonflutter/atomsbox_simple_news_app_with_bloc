@@ -65,24 +65,26 @@ class NewsFeedView extends StatelessWidget {
             ),
             Padding(
               padding: const EdgeInsets.all(16.0),
-              child: SimpleList(
-                title: 'Popular',
-                listItems: [1, 2, 3].map(
-                  (article) {
-                    return SimpleListTile(
-                      title: 'article.headline',
-                      subtitle: 'article.byline',
-                      tagline: 'article.category',
-                      leading: SimpleImage(
-                        imageUrl:
-                            'https://images.unsplash.com/photo-1523995462485-3d171b5c8fa9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1335&q=80',
-                        height: size.height * 0.15,
-                        width: size.height * 0.15,
-                      ),
-                      onTap: () {},
-                    );
-                  },
-                ).toList(),
+              child: AnimateInEffectWrapper(
+                child: SimpleList(
+                  title: 'Popular',
+                  listItems: [1, 2, 3].map(
+                    (article) {
+                      return SimpleListTile(
+                        title: 'article.headline',
+                        subtitle: 'article.byline',
+                        tagline: 'article.category',
+                        leading: SimpleImage(
+                          imageUrl:
+                              'https://images.unsplash.com/photo-1523995462485-3d171b5c8fa9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1335&q=80',
+                          height: size.height * 0.15,
+                          width: size.height * 0.15,
+                        ),
+                        onTap: () {},
+                      );
+                    },
+                  ).toList(),
+                ),
               ),
             ),
           ],

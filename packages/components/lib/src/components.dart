@@ -1,3 +1,4 @@
+export 'components/atoms/animation_wrappers/animate_in_effect.dart';
 export 'components/atoms/simple_app_theme.dart';
 export 'components/atoms/simple_constants.dart';
 export 'components/atoms/simple_icon_button.dart';
