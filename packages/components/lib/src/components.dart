@@ -7,3 +7,4 @@ export 'components/molecules/simple_card.dart';
 export 'components/molecules/simple_list_tile.dart';
 export 'components/organisms/simple_carousel.dart';
 export 'components/organisms/simple_drawer.dart';
+export 'components/organisms/simple_list.dart';
