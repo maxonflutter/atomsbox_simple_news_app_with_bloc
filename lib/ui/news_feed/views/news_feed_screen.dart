@@ -1,7 +1,7 @@
-import 'package:atomsbox_simple_news_app_with_bloc/extensions/string_extensions.dart';
 import 'package:components/components.dart';
 import 'package:flutter/material.dart';
 
+import '../../../extensions/extensions.dart';
 import '../../../models/article.dart';
 
 class NewsFeedScreen extends StatelessWidget {
@@ -52,6 +52,27 @@ class NewsFeedView extends StatelessWidget {
           ),
         ],
       ),
+      drawer: SimpleDrawer(
+          drawerItems: NewsCategory.values.map(
+            (value) {
+              return SimpleListTile(
+                onTap: () {
+                  // Navigator.push(
+                  //   context,
+                  //   NewsCategoryScreen.route(category: value),
+                  // );
+                },
+                title: value.name.capitalize(),
+              );
+            },
+          ).toList(),
+          drawerSecondaryItems: [
+            SimpleListTile(
+              onTap: () {},
+              title: 'Settings',
+              leading: const Icon(Icons.settings),
+            ),
+          ]),
       extendBody: true,
       body: SingleChildScrollView(
         child: Column(

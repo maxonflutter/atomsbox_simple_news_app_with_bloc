@@ -1,1 +1,1 @@
-export 'views/news_feed.dart';
+export 'views/news_feed_screen.dart';

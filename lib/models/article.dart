@@ -14,7 +14,9 @@ enum NewsCategory {
   @JsonValue('entertainment')
   entertainment,
   @JsonValue('sport')
-  sport
+  sport,
+  @JsonValue('lifestyle')
+  lifestyle
 }
 
 @JsonSerializable()
