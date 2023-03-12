@@ -1,4 +1,7 @@
+import 'package:components/components.dart';
 import 'package:flutter/material.dart';
+
+import 'ui/ui.dart';
 
 void main() {
   runApp(const MyApp());
@@ -11,19 +14,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: const HomeScreen(),
+      theme: simpleAppTheme(),
+      home: const NewsFeedScreen(),
     );
-  }
-}
-
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Placeholder();
   }
 }
