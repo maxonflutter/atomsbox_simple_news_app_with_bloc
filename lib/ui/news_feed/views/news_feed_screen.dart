@@ -33,11 +33,6 @@ class NewsFeedView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    List<Article> articles = Article.articles;
-    List<Article> popularNews =
-        Article.articles.where((article) => article.isPopular).toList();
-    List<Article> breakingNews =
-        Article.articles.where((article) => article.isBreakingNews).toList();
 
     return Scaffold(
       appBar: AppBar(
