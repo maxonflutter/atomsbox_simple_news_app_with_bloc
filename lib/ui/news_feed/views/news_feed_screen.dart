@@ -52,6 +52,31 @@ class NewsFeedView extends StatelessWidget {
           ),
         ],
       ),
+      bottomNavigationBar: SimpleBottomNavBar(
+        items: [
+          SimpleIconButton(
+            icon: Icons.home_filled,
+            colorPalette: ColorPalette.primaryContainer,
+            onPressed: () {
+              // Navigator.push(context, NewsFeedScreen.route());
+            },
+          ),
+          SimpleIconButton(
+            icon: Icons.book_rounded,
+            colorPalette: ColorPalette.primary,
+            onPressed: () {
+              /// TODO: Push Read Later screen
+            },
+          ),
+          SimpleIconButton(
+            icon: Icons.person,
+            colorPalette: ColorPalette.primary,
+            onPressed: () {
+              /// TODO: Push Login screen
+            },
+          ),
+        ],
+      ),
       drawer: SimpleDrawer(
           drawerItems: NewsCategory.values.map(
             (value) {
