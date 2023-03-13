@@ -13,6 +13,7 @@ dependencies:
   components:
     path: packages/components
   json_annotation: ^4.8.0
+  flutter_bloc: ^8.1.2
   intl: ^0.18.0
 
 dev_dependencies:
