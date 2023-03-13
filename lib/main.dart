@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'repositories/repositories.dart';
 import 'ui/ui.dart';
+import 'ui/widgets/widgets.dart';
 
 void main() {
   runApp(const App());
@@ -18,7 +19,12 @@ class App extends StatelessWidget {
       providers: [
         RepositoryProvider(create: (context) => NewsRepository()),
       ],
-      child: const AppView(),
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider(create: (context) => BottomNavBarCubit()..start()),
+        ],
+        child: const AppView(),
+      ),
     );
   }
 }
