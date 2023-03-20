@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../extensions/extensions.dart';
 import '../../../models/article.dart';
 import '../../../repositories/repositories.dart';
+import '../../news_category/news_category.dart';
 import '../../news_details/news_details.dart';
 import '../../widgets/widgets.dart';
 import '../blocs/news_feed/news_feed_bloc.dart';
@@ -59,26 +60,27 @@ class NewsFeedView extends StatelessWidget {
       ),
       bottomNavigationBar: BottomNavBar(),
       drawer: SimpleDrawer(
-          drawerItems: NewsCategory.values.map(
-            (value) {
-              return SimpleListTile(
-                onTap: () {
-                  // Navigator.push(
-                  //   context,
-                  //   NewsCategoryScreen.route(category: value),
-                  // );
-                },
-                title: value.name.capitalize(),
-              );
-            },
-          ).toList(),
-          drawerSecondaryItems: [
-            SimpleListTile(
-              onTap: () {},
-              title: 'Settings',
-              leading: const Icon(Icons.settings),
-            ),
-          ]),
+        drawerItems: NewsCategory.values.map(
+          (value) {
+            return SimpleListTile(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  NewsCategoryScreen.route(category: value),
+                );
+              },
+              title: value.name.capitalize(),
+            );
+          },
+        ).toList(),
+        drawerSecondaryItems: [
+          SimpleListTile(
+            onTap: () {},
+            title: 'Settings',
+            leading: const Icon(Icons.settings),
+          ),
+        ],
+      ),
       extendBody: true,
       body: BlocBuilder<NewsFeedBloc, NewsFeedState>(
         builder: (context, state) {
