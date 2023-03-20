@@ -1,23 +1,35 @@
 import 'package:components/components.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:news_api_client/news_api_client.dart';
 
 import 'repositories/repositories.dart';
 import 'ui/ui.dart';
 import 'ui/widgets/widgets.dart';
 
 void main() {
-  runApp(const App());
+  NewsApiClient newsApiClient = NewsApiClient.localhost();
+
+  runApp(
+    App(newsApiClient: newsApiClient),
+  );
 }
 
 class App extends StatelessWidget {
-  const App({super.key});
+  const App({
+    super.key,
+    required this.newsApiClient,
+  });
+
+  final NewsApiClient newsApiClient;
 
   @override
   Widget build(BuildContext context) {
     return MultiRepositoryProvider(
       providers: [
-        RepositoryProvider(create: (context) => NewsRepository()),
+        RepositoryProvider(
+          create: (context) => NewsRepository(newsApiClient: newsApiClient),
+        ),
       ],
       child: MultiBlocProvider(
         providers: [

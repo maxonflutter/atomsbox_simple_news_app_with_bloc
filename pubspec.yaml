@@ -9,9 +9,11 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  cupertino_icons: ^1.0.2
   components:
     path: packages/components
+  news_api_client:
+    path: packages/news_api_client
+  cupertino_icons: ^1.0.2
   equatable: ^2.0.5
   flutter_bloc: ^8.1.2  
   json_annotation: ^4.8.0
