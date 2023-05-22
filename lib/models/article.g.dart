@@ -31,4 +31,5 @@ const _$NewsCategoryEnumMap = {
   NewsCategory.politics: 'politics',
   NewsCategory.entertainment: 'entertainment',
   NewsCategory.sport: 'sport',
+  NewsCategory.lifestyle: 'lifestyle',
 };

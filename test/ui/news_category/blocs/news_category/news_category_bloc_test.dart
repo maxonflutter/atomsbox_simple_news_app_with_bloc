@@ -1,38 +1,40 @@
 import 'package:atomsbox_simple_news_app_with_bloc/ui/news_category/blocs/news_category/news_category_bloc.dart';
-import 'package:bloc_test/bloc_test.dart';
-import 'package:mocktail/mocktail.dart';
+import 'package:mockito/annotations.dart';
+import 'package:mockito/mockito.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:bloc_test/bloc_test.dart';
 import 'package:atomsbox_simple_news_app_with_bloc/models/models.dart';
 import 'package:atomsbox_simple_news_app_with_bloc/repositories/repositories.dart';
 
-class MockNewsRepository extends Mock implements NewsRepository {}
+import 'news_category_bloc_test.mocks.dart';
 
-class FakeArticle extends Fake implements Article {}
+// class MockNewsRepository extends Mock implements NewsRepository {}
 
+// class FakeArticle extends Fake implements Article {}
+
+@GenerateMocks([NewsRepository, Article])
 void main() {
   const mockCategory = NewsCategory.economy;
-  const mockArticles = [];
+
+  late NewsRepository mockNewsRepository;
+  late MockArticle mockArticle;
+
+  setUp(() {
+    mockNewsRepository = MockNewsRepository();
+    mockArticle = MockArticle();
+  });
 
   group('NewsCategoryBloc', () {
-    late NewsRepository newsRepository;
-
-    setUpAll(() {
-      registerFallbackValue(FakeTodo());
-    });
+    NewsCategoryBloc buildBloc() {
+      return NewsCategoryBloc(newsRepository: mockNewsRepository);
+    }
 
     setUp(() {
-      newsRepository = MockNewsRepository();
-      when(
-        () => newsRepository.getArticlesByCategory(mockCategory),
-      ).thenAnswer((_) => );
-      when(
-        () => todoRepository.saveTodo(any()),
-      ).thenAnswer((_) async {});
-    });
+      when(mockNewsRepository.getArticlesByCategory(mockCategory))
+          .thenAnswer((_) => Future.value([mockArticle]));
 
-    NewsCategoryBloc buildBloc() {
-      return NewsCategoryBloc(newsRepository: newsRepository);
-    }
+      when(mockArticle.category).thenReturn(mockCategory);
+    });
 
     group('constructor', () {
       test('works properly', () => expect(buildBloc, returnsNormally));
@@ -40,47 +42,64 @@ void main() {
       test('has correct initial state', () {
         expect(
           buildBloc().state,
-          equals(TodoListLoading()),
+          equals(NewsCategoryState()),
         );
       });
     });
 
-    // group('TodoListSubscriptionRequested', () {
-    //   blocTest<NewsCategoryBloc, TodoListState>(
-    //     'starts listening to repository getTodos stream',
-    //     build: buildBloc,
-    //     act: (bloc) => bloc.add(TodoListStarted()),
-    //     verify: (_) {
-    //       verify(() => todoRepository.getTodos()).called(1);
-    //     },
-    //   );
+    group('NewsCategoryBloc, _onNewsCategoryStarted', () {
+      blocTest<NewsCategoryBloc, NewsCategoryState>(
+        'invoke getArticlesByCategory with correct category',
+        build: buildBloc,
+        act: (bloc) => bloc.add(
+          const NewsCategoryStarted(category: mockCategory),
+        ),
+        verify: (_) {
+          verify(mockNewsRepository.getArticlesByCategory(mockCategory))
+              .called(1);
+        },
+      );
 
-    //   blocTest<NewsCategoryBloc, TodoListState>(
-    //     'emits state with updated status and todos '
-    //     'when repository getTodos stream emits new todos',
-    //     build: buildBloc,
-    //     act: (bloc) => bloc.add(TodoListStarted()),
-    //     expect: () => [const TodoListLoaded(mockTodos)],
-    //   );
-    // });
+      blocTest<NewsCategoryBloc, NewsCategoryState>(
+        'emits two states with updated status and articles',
+        build: buildBloc,
+        act: (bloc) => bloc.add(
+          const NewsCategoryStarted(category: mockCategory),
+        ),
+        expect: () => [
+          const NewsCategoryState(
+            category: mockCategory,
+            status: NewsCategoryStatus.loading,
+          ),
+          NewsCategoryState(
+            category: mockCategory,
+            articles: [mockArticle],
+            status: NewsCategoryStatus.loaded,
+          ),
+        ],
+      );
 
-    // group('TodoListTodoDeleted', () {
-    //   blocTest<NewsCategoryBloc, TodoListState>(
-    //     'deletes todo using repository',
-    //     setUp: () {
-    //       when(
-    //         () => todoRepository.deleteTodo(any()),
-    //       ).thenAnswer((_) async {});
-    //     },
-    //     build: buildBloc,
-    //     seed: () => const TodoListLoaded(mockTodos),
-    //     act: (bloc) => bloc.add(TodoListTodoDeleted(mockTodos.first)),
-    //     verify: (_) {
-    //       verify(
-    //         () => todoRepository.deleteTodo(mockTodos.first.id),
-    //       ).called(1);
-    //     },
-    //   );
-    // });
+      blocTest<NewsCategoryBloc, NewsCategoryState>(
+        'emits two states with statuses [loading, error] if getArticlesByCategory throws',
+        build: buildBloc,
+        setUp: () {
+          when(mockNewsRepository.getArticlesByCategory(mockCategory))
+              .thenThrow((_) => Exception());
+        },
+        act: (bloc) => bloc.add(
+          const NewsCategoryStarted(category: mockCategory),
+        ),
+        expect: () => [
+          const NewsCategoryState(
+            category: mockCategory,
+            status: NewsCategoryStatus.loading,
+          ),
+          const NewsCategoryState(
+            category: mockCategory,
+            status: NewsCategoryStatus.error,
+          ),
+        ],
+      );
+    });
   });
 }
